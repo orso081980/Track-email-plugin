@@ -1,4 +1,4 @@
-# codeableAps
+# Track feedback sent by email
 
 The plugin works with the following shortcodes:
 

@@ -56,13 +56,15 @@ if ( !class_exists( 'Netrack' ) ) {
 
 		public function NetrackScript() {
 			
-			wp_deregister_script('jquery');
-			if( ! wp_script_is( 'jquery', 'enqueued' ) ) {
-				wp_enqueue_script( 'jquery', plugins_url('js/jquery.min.js', __FILE__ ), array(), null, true);
-			}
 			if( ! wp_script_is( 'parsley', 'enqueued' ) ) {
 				wp_enqueue_script( 'parsley', plugins_url('js/parsley.min.js', __FILE__ ), array(), null, true );
 			}
+			global $wp_scripts;
+			
+
+			if(is_admin()) return;
+			$wp_scripts->registered['jquery-core']->src = 'https://code.jquery.com/jquery-3.5.1.min.js';
+			$wp_scripts->registered['jquery']->deps = ['jquery-core'];
 
 		}
 
@@ -133,7 +135,7 @@ if ( !class_exists( 'Netrack' ) ) {
 				"SELECT COUNT(*) FROM $this->NetrackTable WHERE email = %s", $email
 			) );
 			
-			if (isset($_POST['submit_form']) && !$exists && !isset($honeypot) && $error == false) {
+			if (isset($_POST['submit_form']) && !$exists && !$honeypot && empty( $error )) {
 
 				$this->wpdb->insert(
 					$this->NetrackTable,
@@ -149,6 +151,7 @@ if ( !class_exists( 'Netrack' ) ) {
 				$message =[ true, "Thank you for sending us your feedback"];
 
 			} else {
+
 				$message = [ false, "The item inserted is already present on the database, please try again!"];
 			}
 			echo json_encode($message);

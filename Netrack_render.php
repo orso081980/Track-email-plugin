@@ -1,17 +1,18 @@
+<?php 
+$user_info = get_userdata(get_current_user_id());
+$first_name = $user_info->first_name;
+$last_name = $user_info->last_name;
+$email = $user_info->user_email;
+?>
 <div class="container">
 	<form id="contatto" name="contact-form" action="/" method="POST" data-parsley-validate="">
 		<?php if(is_user_logged_in()): ?>
-			<?php 
-			$user_info = get_userdata(get_current_user_id());
-			$first_name = $user_info->first_name;
-			$last_name = $user_info->last_name;
-			?>
+
 			<div class="row">
 				<div class="col-md-6">
 					<div class="md-form mb-0">
 						<label for="fName"><?php esc_html_e('First Name', 'first-name-netrack') ?></label>
 						<input type="text" id="fName" name="fName" class="form-control" required="" value="<?= $first_name ?>" data-parsley-error-message="Please, insert your first name">
-
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -50,13 +51,27 @@
 
 				</div>
 			</div>
-			<div class="col-md-6">
-				<div class="md-form mb-0">
-					<label for="email"><?php esc_html_e('Email', 'email-netrack'); ?></label>
-					<input type="email" id="email" name="email" class="form-control" required="" data-parsley-error-message="Please, insert a valid email">
+			<?php if(is_user_logged_in()): ?>
+				<div class="col-md-6">
+					<div class="md-form mb-0">
+						<label for="email"><?php esc_html_e('Email', 'email-netrack'); ?></label>
+						<input type="email" id="email" name="email" class="form-control" required="" data-parsley-error-message="Please, insert a valid email" value="<?= $email ?>">
 
+					</div>
 				</div>
-			</div>
+				<?php 
+			else: 
+				?>
+				<div class="col-md-6">
+					<div class="md-form mb-0">
+						<label for="email"><?php esc_html_e('Email', 'email-netrack'); ?></label>
+						<input type="email" id="email" name="email" class="form-control" required="" data-parsley-error-message="Please, insert a valid email" value="<?= $email ?>">
+
+					</div>
+				</div>
+				<?php
+			endif;
+			?>
 		</div>
 		<div class="row">
 			<div class="col-md-12">

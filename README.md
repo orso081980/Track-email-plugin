@@ -1,4 +1,4 @@
-# Track feedback sent by email
+# Track feedbacks sent by email
 
 The plugin works with the following shortcodes:
 
